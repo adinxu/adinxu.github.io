@@ -1,2 +1,2 @@
 # adinxu.github.io
-This is the Source Code of https://adinxu.github.io/
+This is the minimal code of github pages based on jekyll-theme-hacker.
