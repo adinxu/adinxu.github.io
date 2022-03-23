@@ -9,7 +9,7 @@ zh: &DEFAULT_CN
   skip_footer: "Skip to footer"
   menu_label: "Menu"
   by: "by"
-  min_read: "分钟 用时"
+  min_read: "分钟 阅读用时"
   read_more: "Read more&hellip;"
   categories: "目录"
   tags: "标签"
