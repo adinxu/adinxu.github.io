@@ -1,0 +1,30 @@
+# Theme text and labels
+
+# Chinese (default)
+# -----------------
+zh: &DEFAULT_CN
+  skip_links: "Skip links"
+  skip_primary_nav: "Skip to primary navigation"
+  skip_content: "Skip to content"
+  skip_footer: "Skip to footer"
+  menu_label: "Menu"
+  by: "by"
+  min_read: "分钟 用时"
+  read_more: "Read more&hellip;"
+  categories: "目录"
+  tags: "标签"
+  pages_categorized: "Pages filed under"
+  pages_tagged: "Pages tagged"
+  table_of_contents: "Table of Contents"
+  results_found: "Result(s) found"
+  share: "分享"
+  tweet: "推特"
+  next: "前一篇"
+  previous: "后一篇"
+  newer: "更新"
+  older: "更旧"
+  back_to_top: "回到顶部"
+  search_placeholder_text: "输入你的搜索内容..."
+  powered_by: "Powered by"
+zh-CN:
+  <<: *DEFAULT_CN
