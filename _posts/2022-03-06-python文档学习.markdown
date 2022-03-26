@@ -1,0 +1,941 @@
+---
+title: "python文档学习"
+categories:
+  - python
+tags:
+  - python 
+  - 编程语言
+---
+
+
+- [1. python文档学习](#1-python文档学习)
+  - [1.1. python解释器](#11-python解释器)
+    - [1.1.1. 传入参数](#111-传入参数)
+    - [1.1.2. 交互模式的提示符](#112-交互模式的提示符)
+  - [1.2. python数据类型与运算符](#12-python数据类型与运算符)
+    - [1.2.1. 数字类型](#121-数字类型)
+    - [1.2.2. 集合(set)](#122-集合set)
+    - [1.2.3. 序列](#123-序列)
+      - [1.2.3.1. 字符串类型(str)](#1231-字符串类型str)
+      - [1.2.3.2. 列表(list)](#1232-列表list)
+      - [1.2.3.3. 元组(tuple)](#1233-元组tuple)
+    - [1.2.4. 字典(dict)](#124-字典dict)
+    - [1.2.5. 运算符](#125-运算符)
+  - [1.3. 控制流](#13-控制流)
+    - [1.3.1. 选择](#131-选择)
+    - [1.3.2. 循环](#132-循环)
+      - [1.3.2.1. 对象方法在循环中的应用](#1321-对象方法在循环中的应用)
+    - [1.3.3. 无动作](#133-无动作)
+    - [1.3.4. 函数](#134-函数)
+      - [1.3.4.1. 函数定义](#1341-函数定义)
+      - [1.3.4.2. 函数定义可变参](#1342-函数定义可变参)
+      - [1.3.4.3. 解包实参列表](#1343-解包实参列表)
+      - [1.3.4.4. lambda表达式](#1344-lambda表达式)
+  - [1.4. 类](#14-类)
+    - [1.4.1. Python 作用域和命名空间](#141-python-作用域和命名空间)
+    - [1.4.2. 定义类](#142-定义类)
+    - [1.4.3. 类的属性](#143-类的属性)
+    - [1.4.4. 类的方法对象](#144-类的方法对象)
+    - [1.4.5. 继承](#145-继承)
+    - [1.4.6. 多重继承](#146-多重继承)
+    - [1.4.7. 私有变量](#147-私有变量)
+    - [1.4.8. 定义空类](#148-定义空类)
+    - [1.4.9. 迭代器](#149-迭代器)
+    - [1.4.10. 生成器](#1410-生成器)
+    - [1.4.11. 生成器表达式](#1411-生成器表达式)
+  - [1.5. 模块](#15-模块)
+    - [1.5.1. 创建和导入模块](#151-创建和导入模块)
+    - [1.5.2. 以脚本方式执行模块](#152-以脚本方式执行模块)
+    - [1.5.3. 模块搜索路径](#153-模块搜索路径)
+    - [1.5.4. 标准模块](#154-标准模块)
+    - [1.5.5. 查看模块定义的名称.](#155-查看模块定义的名称)
+  - [1.6. 包](#16-包)
+    - [1.6.1. 从包中导入](#161-从包中导入)
+    - [1.6.2. 子包的相对导入和绝对导入](#162-子包的相对导入和绝对导入)
+  - [1.7. 输入与输出](#17-输入与输出)
+    - [1.7.1. 输出格式](#171-输出格式)
+    - [1.7.2. 使用 json 保存结构化数据](#172-使用-json-保存结构化数据)
+  - [1.8. 标准库](#18-标准库)
+    - [1.8.1. 操作系统接口](#181-操作系统接口)
+    - [1.8.2. 文件通配符](#182-文件通配符)
+    - [1.8.3. 命令行参数](#183-命令行参数)
+    - [1.8.4. 错误输出重定向和程序终止](#184-错误输出重定向和程序终止)
+    - [1.8.5. 字符串模式匹配](#185-字符串模式匹配)
+    - [1.8.6. 数学](#186-数学)
+    - [1.8.7. 互联网访问](#187-互联网访问)
+    - [1.8.8. 日期和时间](#188-日期和时间)
+    - [1.8.9. 数据压缩](#189-数据压缩)
+    - [1.8.10. 性能测量](#1810-性能测量)
+    - [1.8.11. 质量控制](#1811-质量控制)
+    - [1.8.12. 功能齐备](#1812-功能齐备)
+    - [1.8.13. 格式化输出](#1813-格式化输出)
+    - [1.8.14. 模板](#1814-模板)
+    - [1.8.15. 使用二进制数据记录格式](#1815-使用二进制数据记录格式)
+    - [1.8.16. 多线程](#1816-多线程)
+    - [1.8.17. 日志记录](#1817-日志记录)
+    - [1.8.18. 弱引用](#1818-弱引用)
+    - [1.8.19. 用于操作列表的工具](#1819-用于操作列表的工具)
+    - [1.8.20. 十进制浮点运算](#1820-十进制浮点运算)
+  - [1.9. 错误和异常](#19-错误和异常)
+    - [1.9.1. 句法错误](#191-句法错误)
+    - [1.9.2. 异常](#192-异常)
+    - [1.9.3. 异常的处理](#193-异常的处理)
+    - [1.9.4. 预定义的清理操作](#194-预定义的清理操作)
+  - [1.10. 其他特性](#110-其他特性)
+    - [1.10.1. 多重赋值](#1101-多重赋值)
+    - [1.10.2. 缩进](#1102-缩进)
+    - [1.10.3. 列表推导式](#1103-列表推导式)
+  - [1.11. 常用函数](#111-常用函数)
+  - [1.12. 待继续学习的特性](#112-待继续学习的特性)
+  
+# 1. python文档学习
+
+之前爬取csdn博客的时候，使用了别人写的python工具，但是一直有依赖问题报错。之前一直说要学python，开始看一看吧。  
+打开python官网，找到[文档汇总](https://www.python.org/doc/)，这个页面上有很多有用的资料,比如：  
+python3的[文档](https://docs.python.org/zh-cn/3/)。  
+另外还有一个叫[pypi](https://pypi.org/)的东西，相当于docker的docker hub一样的东西，把软件包都汇总在一起，个人感觉python强大的原因之一就是因为python包。  
+[设计和历史常见问题](https://docs.python.org/zh-cn/3/faq/design.html#)，这个也挺有意思的。  
+下面是关于python doc学习的记录  
+## 1.1. python解释器
+### 1.1.1. 传入参数  
+   这个和c语言main函数的入参很像，如果想要读取python的命令行参数，需要执行 `import sys`，导入这个模块，因为解释器读取命令行参数，把脚本名与其他参数转化为字符串列表存到 sys 模块的 argv 变量里。
+### 1.1.2. 交互模式的提示符  
+- 主提示符通常用三个大于号`>>>`表示,提示输入下一条指令  
+- 输入连续行时，显示次要提示符，默认是三个点`...`，相当于持续输入
+
+## 1.2. python数据类型与运算符  
+
+### 1.2.1. 数字类型  
+数字类型有int,float,Decimal及Fraction及复数等等。  
+
+ - Python 字符串不能修改，是 immutable 的。
+  
+### 1.2.2. 集合(set)
+集合可以类比数学里的集合，他是由不重复元素组成的无序容器。  
+创建集合用花括号或 set() 函数。注意，创建空集合只能用 set()，不能用 {}，{} 创建的是空字典.  
+创建集合：
+```python
+>>> basket = {'apple', 'orange', 'apple', 'pear', 'orange', 'banana'}
+>>> print(basket)                      # show that duplicates have been removed
+{'orange', 'banana', 'pear', 'apple'}
+>>> 'orange' in basket                 # fast membership testing
+True
+>>> 'crabgrass' in basket
+False
+
+>>> # Demonstrate set operations on unique letters from two words
+...
+>>> a = set('abracadabra')
+>>> a                                  # unique letters in a
+{'a', 'r', 'b', 'c', 'd'}
+```
+### 1.2.3. 序列
+#### 1.2.3.1. 字符串类型(str)  
+- python中用用单引号（'……'）或双引号（"……"）标注的结果相同，都表示字符串。  
+- 字符串字面值可以包含多行。 一种实现方式是使用三重引号："""...""" 或 '''...'''。 字符串中将自动包括行结束符，但也可以在换行的地方添加一个 \ 来避免此情况。  
+- 字符串可以用 + 合并（粘到一起），也可以用 * 重复。  
+- 相邻的两个或多个 字符串字面值 （引号标注的字符）会自动合并。  
+- 字符串支持 索引 （下标访问），第一个字符的索引是 0，用负数索引时，从右边开始计数。除了索引，字符串还支持 切片。索引可以提取单个字符，切片 则提取子字符串：
+
+    ```python
+    >>> word[0:2]  # characters from position 0 (included) to 2 (excluded)
+    'Py'
+    >>> word[2:5]  # characters from position 2 (included) to 5 (excluded)
+    'tho'
+    >>> word[:2]   # character from the beginning to position 2 (excluded)
+    'Py'
+    >>> word[4:]   # characters from position 4 (included) to the end
+    'on'
+    >>> word[-2:]  # characters from the second-last (included) to the end
+    'on'
+    ```
+
+#### 1.2.3.2. 列表(list)  
+列表可以比较像c语言的数组，在列表末尾添加和删除元素非常快，但在列表开头插入或移除元素却很慢。  
+- 列表是用方括号标注，逗号分隔的一组值。列表可以包含不同类型的元素。支持索引和切片.  
+- 列表是 mutable 类型，其内容可以改变  
+    ```python
+    >>> squares = [1, 4, 9, 16, 25]
+    >>> squares
+    [1, 4, 9, 16, 25]
+    ```
+#### 1.2.3.3. 元组(tuple)
+元组即为tuples，他看起来跟列表很像，但他是不可更改的，即immutable。但是他可以包含可更改的变量，比如列表：  
+```python
+>>> # but they can contain mutable objects:
+... v = ([1, 2, 3], [3, 2, 1])
+>>> v
+([1, 2, 3], [3, 2, 1])
+```
+
+---
+
+元组打包
+```python
+>>> t = 12345, 54321, 'hello!'
+```
+序列解包
+```python
+>>> x, y, z = t
+```
+序列解包时，左侧变量与右侧序列元素的数量应相等。注意，多重赋值其实只是元组打包和序列解包的组合。
+### 1.2.4. 字典(dict)
+字典以 关键字 为索引，关键字通常是字符串或数字，也可以是其他任意不可变类型。只包含字符串、数字、元组的元组，也可以用作关键字。但如果元组直接或间接地包含了可变对象，就不能用作关键字。列表不能当关键字，因为列表可以用索引、切片、append() 、extend() 等方法修改。  
+花括号 {} 用于创建空字典。另一种初始化字典的方式是，在花括号里输入逗号分隔的键值对，这也是字典的输出方式。
+```python
+>>> tel = {'jack': 4098, 'sape': 4139}
+>>> tel['guido'] = 4127
+>>> tel
+{'jack': 4098, 'sape': 4139, 'guido': 4127}
+```
+dict() 构造函数可以直接用键值对序列创建字典：
+
+```python
+>>>
+>>> dict([('sape', 4139), ('guido', 4127), ('jack', 4098)])
+{'sape': 4139, 'guido': 4127, 'jack': 4098}
+```
+字典推导式可以用任意键值表达式创建字典：
+
+```python
+>>>
+>>> {x: x**2 for x in (2, 4, 6)}
+{2: 4, 4: 16, 6: 36}
+```
+关键字是比较简单的字符串时，直接用关键字参数指定键值对更便捷：
+
+```python
+>>>
+>>> dict(sape=4139, guido=4127, jack=4098)
+{'sape': 4139, 'guido': 4127, 'jack': 4098}
+```
+### 1.2.5. 运算符  
+- `+`、`-`、`*`、`/`与c语言相同，特殊的是`/`返回浮点数，用 `//` 运算符执行 floor division 的结果是整数（忽略小数）；
+- 计算余数用 `%`.
+- 计算乘方用 `**`.
+- 等号`=`用于给变量赋值.
+- 交互模式下，上次输出的表达式会赋给变量 `_`,这个相当于bash里面的`$?`.
+- Python 与 C 不同，在表达式内部赋值必须显式使用 海象运算符 `:=`。 这避免了 C 程序中常见的问题：要在表达式中写 `==` 时，却写成了 `=`。
+## 1.3. 控制流
+### 1.3.1. 选择
+- `if`语句
+    ```python
+    >>> x = int(input("Please enter an integer: "))
+    Please enter an integer: 42
+    >>> if x < 0:
+    ...     x = 0
+    ...     print('Negative changed to zero')
+    ... elif x == 0:
+    ...     print('Zero')
+    ... elif x == 1:
+    ...     print('Single')
+    ... else:
+    ...     print('More')
+    ...
+    ```
+- `match`语句  
+  类似于c语言的switch
+  ```python
+  def http_error(status):
+      match status:
+          case 400:
+              return "Bad request"
+          case 401 | 403 | 404:
+              return "Not allowed"
+          case 418:
+              return "I'm a teapot"
+          case _:
+              return "Something's wrong with the internet"
+  ```
+  case后的部分被称为模式。模式不仅可以是值，而且还能提取元素.模式的形式类似解包赋值，并可被用于绑定变量.  
+  为模式添加成为守护项的 if 子句。如果守护项的值为假，则 match 继续匹配下一个 case 语句块。注意，值的捕获发生在守护项被求值之前：
+  ```python
+  match point:
+    case Point(x, y) if x == y:
+        print(f"Y=X at {x}")
+    case Point(x, y):
+        print(f"Not on the diagonal")
+  ```
+- `in`,`not in`,`is`,`is not`  
+  比较操作符`in`和`not in`是成员测试，用于确定值是否在容器中。操作符`is`和`is not`比较两个对象是否是同一个对象。所有比较运算符具有相同的优先级，优先级低于所有数值运算符。
+- 比较操作支持链式操作。例如，a < b == c 校验 a 是否小于 b，且 b 是否等于 c。
+### 1.3.2. 循环
+- `for`语句  
+   python的for可以看作是一个迭代器，并不提供定义迭代步骤或暂停条件的能力（如 C）。  
+   遍历集合时修改集合的内容，会很容易生成错误的结果。因此不能直接进行循环，而是应遍历该集合的副本或创建新的集合.
+- `break`,`continue`,`else`  
+  break 和continue语句和 C 中的类似.  
+  循环语句支持 else 子句；for 循环中，可迭代对象中的元素全部循环完毕，或 while 循环的条件为假时，执行该子句；
+    ```python
+    >>> for n in range(2, 10):
+    ...     for x in range(2, n):
+    ...         if n % x == 0:
+    ...             print(n, 'equals', x, '*', n//x)
+    ...             break
+    ...     else:
+    ...         # loop fell through without finding a factor
+    ...         print(n, 'is a prime number')
+    ```
+#### 1.3.2.1. 对象方法在循环中的应用
+- 在字典中循环时，用 items() 方法可同时取出键和对应的值：
+
+  ```python
+  >>>
+  >>> knights = {'gallahad': 'the pure', 'robin': 'the brave'}
+  >>> for k, v in knights.items():
+  ...     print(k, v)
+  ...
+  gallahad the pure
+  robin the brave
+  ```
+- 在序列中循环时，用 enumerate() 函数可以同时取出位置索引和对应的值：
+  ```python
+  >>>
+  >>> for i, v in enumerate(['tic', 'tac', 'toe']):
+  ...     print(i, v)
+  ...
+  0 tic
+  1 tac
+  2 toe
+  ```
+- 同时循环两个或多个序列时，用 zip() 函数可以将其内的元素一一匹配：
+
+  ```python
+  >>>
+  >>> questions = ['name', 'quest', 'favorite color']
+  >>> answers = ['lancelot', 'the holy grail', 'blue']
+  >>> for q, a in zip(questions, answers):
+  ...     print('What is your {0}?  It is {1}.'.format(q, a))
+  What is your name?  It is lancelot.
+  What is your quest?  It is the holy grail.
+  What is your favorite color?  It is blue.
+  ```
+- 逆向循环序列时，先正向定位序列，然后调用 reversed() 函数：
+
+  ```python
+  >>>
+  >>> for i in reversed(range(1, 10, 2)):
+  ...     print(i)
+  9
+  7
+  5
+  3
+  1
+  ```
+- 按指定顺序循环序列，可以用 sorted() 函数，在不改动原序列的基础上，返回一个重新的序列：
+
+  ```python
+  >>>
+  >>> basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+  >>> for i in sorted(basket):
+  ...     print(i)
+  ...
+  apple
+  apple
+  banana
+  orange
+  orange
+  pear
+  ```
+- 使用 set() 去除序列中的重复元素。使用 sorted() 加 set() 则按排序后的顺序，循环遍历序列中的唯一元素：
+
+  ```python
+  >>>
+  >>> basket = ['apple', 'orange', 'apple', 'pear', 'orange', 'banana']
+  >>> for f in sorted(set(basket)):
+  ...     print(f)
+  ...
+  apple
+  banana
+  orange
+  pear
+  ```
+### 1.3.3. 无动作
+`pass`语句相当于汇编里的nop,并不执行任何实际动作。
+### 1.3.4. 函数
+#### 1.3.4.1. 函数定义
+定义 函数使用关键字`def`，后跟函数名与括号内的形参列表。函数语句从下一行开始，并且必须缩进。  
+函数内的第一条语句是字符串时，该字符串就是文档字符串，也称为 docstring，详见 文档字符串。利用文档字符串可以自动生成在线文档或打印版文档，还可以让开发者在浏览代码时直接查阅文档；Python 开发者最好养成在代码中加入文档字符串的好习惯。
+```python
+>>> def fib(n):    # write Fibonacci series up to n
+...     """Print a Fibonacci series up to n."""
+...     a, b = 0, 1
+...     while a < n:
+...         print(a, end=' ')
+...         a, b = b, a+b
+...     print()
+```
+---
+
+#### 1.3.4.2. 函数定义可变参
+下面列举了可变数量的参数的函数的定义，其中位置参数代表依靠位置来给形参赋值的参数，关键字参数代表显式的使用关键字来形参赋值的参数。
+- 默认值参数  
+  可以为参数指定默认值。调用函数时，可以使用比定义时更少的参数.
+- 关键字参数  
+  kwarg=value 形式的 关键字参数 也可以用于调用函数。\*name 形参可以与\*\*name组合使用（\*name 必须在 \*\*name 前面）， \*name 形参接收一个 元组，该元组包含形参列表之外的位置参数。 \*\*name接收一个字典（详见 映射类型 --- dict），该字典包含与函数中已定义形参对应之外的所有关键字参数。  
+  ```python
+  def cheeseshop(kind, *arguments, **keywords):
+      print("-- Do you have any", kind, "?")
+      print("-- I'm sorry, we're all out of", kind)
+      for arg in arguments:
+          print(arg)
+      print("-" * 40)
+      for kw in keywords:
+          print(kw, ":", keywords[kw])
+  ```
+  该函数可以用如下方式调用：
+  ```python
+  cheeseshop("Limburger", "It's very runny, sir.",
+            "It's really very, VERY runny, sir.",
+            shopkeeper="Michael Palin",
+            client="John Cleese",
+            sketch="Cheese Shop Sketch")
+  ```
+  输出结果如下：
+  ```python
+  -- Do you have any Limburger ?
+  -- I'm sorry, we're all out of Limburger
+  It's very runny, sir.
+  It's really very, VERY runny, sir.
+  ----------------------------------------
+  shopkeeper : Michael Palin
+  client : John Cleese
+  sketch : Cheese Shop Sketch
+  ```
+- 特殊参数  
+  默认情况下，参数可以按位置或显式关键字传递给 Python 函数。为了让代码易读、高效，最好限制参数的传递方式，这样，开发者只需查看函数定义，即可确定参数项是仅按位置、按位置或关键字，还是仅按关键字传递。
+
+  函数定义如下：
+  ```python
+  def f(pos1, pos2, /, pos_or_kwd, *, kwd1, kwd2):
+        -----------    ----------     ----------
+          |             |                  |
+          |        Positional or keyword   |
+          |                                - Keyword only
+          -- Positional only
+  ```
+  / 和 * 是可选的。这些符号表明形参如何把参数值传递给函数：位置、位置或关键字、关键字。关键字形参也叫作命名形参。
+  
+- 规定位置或显式关键字参数的意义  
+  防止位置参数与关键字参数的键冲突  
+
+
+#### 1.3.4.3. 解包实参列表  
+函数调用要求独立的位置参数，但实参在列表或元组里时，要执行相反的操作。例如，内置的 range() 函数要求独立的 start 和 stop 实参。如果这些参数不是独立的，则要在调用函数时，用 * 操作符把实参从列表或元组解包出来，用**解出字典。
+
+#### 1.3.4.4. lambda表达式  
+lambda表达式是常规函数定义的语法糖，用于创建小巧的匿名函数，可用于任何需要函数对象的地方。
+```python
+>>> def make_incrementor(n):
+...     return lambda x: x + n
+...
+>>> f = make_incrementor(42)
+>>> f(0)
+42
+>>> f(1)
+43
+```
+  上例用 lambda 表达式返回函数。还可以把匿名函数用作传递的实参：
+```python
+>>>
+>>> pairs = [(1, 'one'), (2, 'two'), (3, 'three'), (4, 'four')]
+>>> pairs.sort(key=lambda pair: pair[1])
+>>> pairs
+[(4, 'four'), (1, 'one'), (3, 'three'), (2, 'two')]
+```
+## 1.4. 类
+既然是面向对象语言，就不能不提类。python的类比较特别的是，和python模块一样，类也支持 Python 动态特性：在运行时创建，创建后还可以修改。
+### 1.4.1. Python 作用域和命名空间
+命名空间是在不同时刻创建的，且拥有不同的生命周期。内置名称的命名空间是在 Python 解释器启动时创建的，永远不会被删除。模块的全局命名空间在读取模块定义时创建；通常，模块的命名空间也会持续到解释器退出。从脚本文件读取或交互式读取的，由解释器顶层调用执行的语句是 \_\_main\_\_ 模块调用的一部分，也拥有自己的全局命名空间。内置名称实际上也在模块里，即 builtins 。  
+函数的本地命名空间在调用该函数时创建，并在函数返回或抛出不在函数内部处理的错误时被删除。 （实际上，用“遗忘”来描述实际发生的情况会更好一些。） 当然，每次递归调用都会有自己的本地命名空间。  
+作用域 是命名空间可直接访问的 Python 程序的文本区域。 “可直接访问” 的意思是，对名称的非限定引用会在命名空间中查找名称。  
+执行期间的任何时刻，都会有 3 或 4 个命名空间可被直接访问的嵌套作用域：
+* 最内层作用域，包含局部名称，并首先在其中进行搜索
+* 封闭函数的作用域，包含非局部名称和非全局名称，从最近的封闭作用域开始搜索
+* 倒数第二个作用域，包含当前模块的全局名称
+* 最外层的作用域，包含内置名称的命名空间，最后搜索
+查看以下示例观察如何引用不同作用域和名称空间，以及 global 和 nonlocal 对变量绑定的影响：
+```py
+def scope_test():
+    def do_local():
+        spam = "local spam"
+
+    def do_nonlocal():
+        nonlocal spam
+        spam = "nonlocal spam"
+
+    def do_global():
+        global spam
+        spam = "global spam"
+
+    spam = "test spam"
+    do_local()
+    print("After local assignment:", spam)
+    do_nonlocal()
+    print("After nonlocal assignment:", spam)
+    do_global()
+    print("After global assignment:", spam)
+
+scope_test()
+print("In global scope:", spam)
+```
+输出为：
+```
+After local assignment: test spam
+After nonlocal assignment: nonlocal spam
+After global assignment: nonlocal spam
+In global scope: global spam
+```
+注意，局部 赋值（这是默认状态）不会改变 scope_test 对 spam 的绑定。 nonlocal 赋值会改变 scope_test 对 spam 的绑定，而 global 赋值会改变模块层级的绑定。
+### 1.4.2. 定义类
+与函数定义 (def 语句) 一样，类定义必须先执行才能生效。类用class关键字定义。
+```py
+class MyClass:
+    """A simple example class"""
+    i = 12345
+
+    def f(self):
+        return 'hello world'
+```
+### 1.4.3. 类的属性
+- 将类实例化：
+  ```py
+  x = MyClass()
+  ```
+- 类的实例化操作会自动调用 \_\_init\_\_(),因此可以进行初始化操作：
+  ```py
+  >>> class Complex:
+  ...     def __init__(self, realpart, imagpart):
+  ...         self.r = realpart
+  ...         self.i = imagpart
+  ...
+  >>> x = Complex(3.0, -4.5)
+  >>> x.r, x.i
+  (3.0, -4.5)
+  ```
+- 类的数据属性  
+  数据属性不需要声明；像局部变量一样，它们将在第一次被赋值时产生。
+  ```py
+  >>> x.i
+  123
+  >>> x.m=1
+  >>> x.m
+  1
+  >>> del x.m
+  >>> x.m
+  Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+  AttributeError: 'myclass' object has no attribute 'm'
+  ```
+### 1.4.4. 类的方法对象
+- 方法对象  
+MyClass.f 是一个函数。x.f 与 MyClass.f 并不是一回事 --- 它是一个 方法对象，不是函数对象。
+  ```py
+  >>> x = MyClass()
+  >>> type(x.f)
+  <class 'method'>
+  >>> type(MyClass.f)
+  <class 'function'>
+  ```
+  立即调用一个方法并不是必须的: x.f 是一个方法对象，它可以被保存起来以后再调用。 
+  ```py
+  xf = x.f
+  while True:
+      print(xf())
+  ```
+  方法的特殊之处就在于实例对象会作为函数的第一个参数被传入。 在上方的代码块中，调用 x.f() 其实就相当于 MyClass.f(x)。 总之，调用一个具有 n 个参数的方法就相当于调用再多一个参数的对应函数，这个参数值为方法所属实例对象，位置在其他参数之前。
+- self变量  
+  方法的第一个参数常常被命名为 self。 这也不过就是一个约定: self 这一名称在 Python 中绝对没有特殊含义。 但是要注意，不遵循此约定会使得你的代码对其他 Python 程序员来说缺乏可读性，而且也可以想像一个 类浏览器 程序的编写可能会依赖于这样的约定。
+###  1.4.5. 继承
+派生类定义的语法如下所示:
+```py
+class DerivedClassName(BaseClassName):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+以下也是可行的：
+```py
+class DerivedClassName(modname.BaseClassName):
+```
+派生类定义的执行过程与基类相同。 当构造类对象时，基类会被记住。 此信息将被用来解析属性引用：如果请求的属性在类中找不到，搜索将转往基类中进行查找。 如果基类本身也派生自其他某个类，则此规则将被递归地应用。
+### 1.4.6. 多重继承
+Python 也支持一种多重继承。 带有多个基类的类定义语句如下所示:
+```py
+class DerivedClassName(Base1, Base2, Base3):
+    <statement-1>
+    .
+    .
+    .
+    <statement-N>
+```
+对于多数应用来说，在最简单的情况下，你可以认为搜索从父类所继承属性的操作是深度优先、从左至右的，当层次结构中存在重叠时不会在同一个类中搜索两次。 因此，如果某一属性在 DerivedClassName 中未找到，则会到 Base1 中搜索它，然后（递归地）到 Base1 的基类中搜索，如果在那里未找到，再到 Base2 中搜索，依此类推。
+真实情况比这个更复杂一些；方法解析顺序会动态改变以支持对 `super()` 的协同调用。 这种方式在某些其他多重继承型语言中被称为后续方法调用，它比单继承型语言中的 super 调用更强大。
+### 1.4.7. 私有变量
+那种仅限从一个对象内部访问的“私有”实例变量在 Python 中并不存在。 但是，大多数 Python 代码都遵循这样一个约定：带有一个下划线的名称 (例如 _spam) 应该被当作是 API 的非公有部分 (无论它是函数、方法或是数据成员)。 这应当被视为一个实现细节，可能不经通知即加以改变。
+由于存在对于类私有成员的有效使用场景（例如避免名称与子类所定义的名称相冲突），因此存在对此种机制的有限支持，称为 **名称改写**。 任何形式为 __spam 的标识符（至少带有两个前缀下划线，至多一个后缀下划线）的文本将被替换为 _classname__spam，其中 classname 为去除了前缀下划线的当前类名称。 这种改写不考虑标识符的句法位置，只要它出现在类定义内部就会进行。
+### 1.4.8. 定义空类
+有时会需要使用类似于 Pascal 的“record”或 C 的“struct”这样的数据类型，将一些命名数据项捆绑在一起。 这种情况适合定义一个空类:
+```py
+class Employee:
+    pass
+
+john = Employee()  # Create an empty employee record
+
+# Fill the fields of the record
+john.name = 'John Doe'
+john.dept = 'computer lab'
+john.salary = 1000
+```
+### 1.4.9. 迭代器
+容器对象上使用 for 语句是靠在容器对象上调用 iter()实现的。 该函数返回一个定义了 \_\_next\_\_() 方法的迭代器对象，此方法将逐一访问容器中的元素。  
+你可以使用 next() 内置函数来调用 __next__() 方法；这个例子显示了它的运作方式:
+```py
+>>> s = 'abc'
+>>> it = iter(s)
+>>> it
+<str_iterator object at 0x10c90e650>
+>>> next(it)
+'a'
+>>> next(it)
+'b'
+>>> next(it)
+'c'
+>>> next(it)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+    next(it)
+StopIteration
+```
+给自己的类添加迭代器行为可以定义一个 __iter__() 方法来返回一个带有 __next__() 方法的对象。 如果类已定义了 __next__()，则 __iter__() 可以简单地返回 self:
+```py
+class Reverse:
+    """Iterator for looping over a sequence backwards."""
+    def __init__(self, data):
+        self.data = data
+        self.index = len(data)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index == 0:
+            raise StopIteration
+        self.index = self.index - 1
+        return self.data[self.index]
+>>>
+>>> rev = Reverse('spam')
+>>> iter(rev)
+<__main__.Reverse object at 0x00A1DB50>
+>>> for char in rev:
+...     print(char)
+...
+m
+a
+p
+s
+```
+### 1.4.10. 生成器
+生成器 是一个用于创建迭代器的简单而强大的工具。 它们的写法类似于标准的函数，但当它们要返回数据时会使用 yield 语句。 每次在生成器上调用 next() 时，它会从上次离开的位置恢复执行（它会记住上次执行语句时的所有数据值）。
+```py
+def reverse(data):
+    for index in range(len(data)-1, -1, -1):
+        yield data[index]
+>>>
+>>> for char in reverse('golf'):
+...     print(char)
+...
+f
+l
+o
+g 
+```
+可以用生成器来完成的操作同样可以用前一节所描述的基于类的迭代器来完成。 但生成器的写法更为紧凑，因为它会自动创建 __iter__() 和 __next__() 方法。
+```py
+>>> it = reverse("golf")
+>>> next(it)
+'f'
+>>> next(it)
+'l'
+>>> next(it)
+'o'
+>>> next(it)
+'g'
+>>> next(it)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+StopIteration
+```
+另一个关键特性在于局部变量和执行状态会在每次调用之间自动保存。 这使得该函数相比使用 self.index 和 self.data 这种实例变量的方式更易编写且更为清晰。
+
+除了会自动创建方法和保存程序状态，当生成器终结时，它们还会自动引发 StopIteration。 这些特性结合在一起，使得创建迭代器能与编写常规函数一样容易。
+这可能类似于其他语言的闭包。
+可以参考[Python 的关键字 yield 有哪些用法和用途？](https://www.zhihu.com/question/345210030/answer/841903171)
+### 1.4.11. 生成器表达式
+某些简单的生成器可以写成简洁的表达式代码，所用语法类似列表推导式，但外层为圆括号而非方括号。 这种表达式被设计用于生成器将立即被外层函数所使用的情况。 生成器表达式相比完整的生成器更紧凑但较不灵活，相比等效的列表推导式则更为节省内存。
+```py
+>>> sum(i*i for i in range(10))                 # sum of squares
+285
+
+>>> xvec = [10, 20, 30]
+>>> yvec = [7, 5, 3]
+>>> sum(x*y for x,y in zip(xvec, yvec))         # dot product
+260
+
+>>> unique_words = set(word for line in page  for word in line.split())
+
+>>> valedictorian = max((student.gpa, student.name) for student in graduates)
+
+>>> data = 'golf'
+>>> list(data[i] for i in range(len(data)-1, -1, -1))
+['f', 'l', 'o', 'g']
+```
+## 1.5. 模块
+### 1.5.1. 创建和导入模块
+模块就是把各种定义存入一个文件，以便在脚本或解释器的交互式实例中使用 ；模块中的定义可以导入到其他模块或主模块。  
+模块是包含 Python 定义和语句的文件。其文件名是模块名加后缀名 .py 。在模块内部，通过全局变量 \_\_name\_\_ 可以获取模块名（即字符串）。   
+比如创建以下python脚本fibo.py: 
+```python
+# Fibonacci numbers module
+
+def fib(n):    # write Fibonacci series up to n
+    a, b = 0, 1
+    while a < n:
+        print(a, end=' ')
+        a, b = b, a+b
+    print()
+```
+进入 Python 解释器，用以下命令导入该模块：
+```python
+>>> import fibo
+```
+不直接把 fibo 函数定义的名称导入到当前符号表，只导入模块名 fibo 。  
+```python
+>>> fibo.fib(1000)
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987
+>>> fibo.__name__
+'fibo'
+>>> fib = fibo.fib
+>>> fib(500)
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+```
+import 语句有一个变体，可以直接把模块里的名称导入到另一个模块的符号表。例如：
+```python
+>>> from fibo import fib
+>>> fib(500)
+0 1 1 2 3 5 8 13 21 34 55 89 144 233 377
+```
+### 1.5.2. 以脚本方式执行模块
+
+可以用以下方式运行 Python 模块：  
+```
+python fibo.py <arguments>
+```
+
+这项操作将执行模块里的代码，和导入模块一样，但会把 \_\_name\_\_ 赋值为 "\_\_main\_\_"。 所以可以把下列代码添加到模块末尾：
+```python
+if __name__ == "__main__":
+    import sys
+    fib(int(sys.argv[1]))
+```
+导入模块时，不运行这些代码。这种操作常用于为模块提供便捷用户接口，或用于测试（把模块当作执行测试套件的脚本运行）。
+### 1.5.3. 模块搜索路径
+查找位置：  
+1. 内置模块
+2. sys.path路径
+    - 输入脚本的目录
+    - PYTHONPATH
+    - site-packages目录  
+  
+初始化后，Python 程序可以更改 `sys.path`。运行脚本的目录在标准库路径之前，置于搜索路径的开头。即，加载的是该目录里的脚本，而不是标准库的同名模块。  
+添加模块搜索路径：
+```py
+>>> import sys
+>>> sys.path.append('/ufs/guido/lib/python')
+```
+### 1.5.4. 标准模块
+### 1.5.5. 查看模块定义的名称.  
+内置函数 dir() 用于查找模块定义的名称。返回结果是经过排序的字符串列表:
+```py
+>>> dir()
+['__annotations__', '__builtins__', '__doc__', '__loader__', '__name__', '__package__', '__spec__', 'sys']
+```
+没有参数时，dir() 列出当前定义的名称：
+```py
+>>> a = [1, 2, 3, 4, 5]
+>>> import fibo
+>>> fib = fibo.fib
+>>> dir()
+['__builtins__', '__name__', 'a', 'fib', 'fibo', 'sys']
+```
+## 1.6. 包
+### 1.6.1. 从包中导入
+包是一种用“点式模块名”构造 Python 模块命名空间的方法。  
+假设要为统一处理声音文件与声音数据设计一个模块集（“包”）。声音文件的格式很多（通常以扩展名来识别，例如：.wav， .aiff， .au），因此，为了不同文件格式之间的转换，需要创建和维护一个不断增长的模块集合。为了实现对声音数据的不同处理（例如，混声、添加回声、均衡器功能、创造人工立体声效果），还要编写无穷无尽的模块流。下面这个分级文件树展示了这个包的架构：
+
+```
+sound/                          Top-level package
+      __init__.py               Initialize the sound package
+      formats/                  Subpackage for file format conversions
+              __init__.py
+              wavread.py
+              wavwrite.py
+              aiffread.py
+              aiffwrite.py
+              auread.py
+              auwrite.py
+              ...
+      effects/                  Subpackage for sound effects
+              __init__.py
+              echo.py
+              surround.py
+              reverse.py
+              ...
+      filters/                  Subpackage for filters
+              __init__.py
+              equalizer.py
+              vocoder.py
+              karaoke.py
+              ...
+```
+导入包时，Python 搜索 sys.path 里的目录，查找包的子目录。
+Python 只把含 __init__.py 文件的目录当成包。这样可以防止以 string 等通用名称命名的目录，无意中屏蔽出现在后方模块搜索路径中的有效模块。 最简情况下，__init__.py 只是一个空文件，但该文件也可以执行包的初始化代码，或设置 __all__ 变量。  
+还可以从包中导入单个模块，例如：
+```py
+import sound.effects.echo
+sound.effects.echo.echofilter(input, output, delay=0.7, atten=4) #引用时必须使用子模块的全名
+from sound.effects.echo import echofilter
+echofilter(input, output, delay=0.7, atten=4) #可以直接使用函数 echofilter()
+```
+注意，使用 from package import item 时，item 可以是包的子模块（或子包），也可以是包中定义的函数、类或变量等其他名称。import 语句首先测试包中是否定义了 item；如果未在包中定义，则假定 item 是模块，并尝试加载。如果找不到 item，则触发 ImportError 异常。  
+相反，使用 import item.subitem.subsubitem 句法时，除最后一项外，每个 item 都必须是包；最后一项可以是模块或包，但不能是上一项中定义的类、函数或变量。
+### 1.6.2. 子包的相对导入和绝对导入
+包中含有多个子包时（与示例中的 sound 包一样），可以使用绝对导入引用兄弟包中的子模块。例如，要在模块 sound.filters.vocoder 中使用 sound.effects 包的 echo 模块时，可以用  `from sound.effects import echo` 导入。  
+还可以用 import 语句的 from module import name 形式执行相对导入。这些导入语句使用前导句点表示相对导入中的当前包和父包。例如，相对于 surround 模块，可以使用：
+```py
+from . import echo
+from .. import formats
+from ..filters import equalizer
+```
+注意，相对导入基于当前模块名。因为主模块名是 "__main__" ，所以 Python 程序的主模块必须始终使用绝对导入。
+## 1.7. 输入与输出
+### 1.7.1. 输出格式
+- 表达式语句
+- prinf()函数
+- 使用 格式化字符串字面值 ，要在字符串开头的引号/三引号前添加 f 或 F 。在这种字符串中，可以在 { 和 } 字符之间输入引用的变量，或字面值的 Python 表达式。
+  ```py
+  >>> year = 2016
+  >>> event = 'Referendum'
+  >>> f'Results of the {year} {event}'
+  'Results of the 2016 Referendum'
+  ```
+- 字符串的 str.format() 方法需要更多手动操作。该方法也用 { 和 } 标记替换变量的位置，虽然这种方法支持详细的格式化指令，但需要提供格式化信息。
+```py
+>>> yes_votes = 42_572_654
+>>> no_votes = 43_132_495
+>>> percentage = yes_votes / (yes_votes + no_votes)
+>>> '{:-9} YES votes  {:2.2%}'.format(yes_votes, percentage)
+' 42572654 YES votes  49.67%'
+```
+### 1.7.2. 使用 json 保存结构化数据
+json 标准模块采用 Python 数据层次结构，并将之转换为字符串表示形式；这个过程称为 serializing （序列化）。从字符串表示中重建数据称为 deserializing （解序化）。
+```py
+>>> import json
+>>> x = [1, 'simple', 'list']
+>>> json.dumps(x)
+'[1, "simple", "list"]'
+```
+## 1.8. 标准库
+### 1.8.1. 操作系统接口
+### 1.8.2. 文件通配符
+### 1.8.3. 命令行参数
+### 1.8.4. 错误输出重定向和程序终止
+### 1.8.5. 字符串模式匹配
+### 1.8.6. 数学
+### 1.8.7. 互联网访问
+### 1.8.8. 日期和时间
+### 1.8.9. 数据压缩
+### 1.8.10. 性能测量
+### 1.8.11. 质量控制
+### 1.8.12. 功能齐备
+### 1.8.13. 格式化输出
+### 1.8.14. 模板
+### 1.8.15. 使用二进制数据记录格式
+### 1.8.16. 多线程
+### 1.8.17. 日志记录
+### 1.8.18. 弱引用
+### 1.8.19. 用于操作列表的工具
+### 1.8.20. 十进制浮点运算
+## 1.9. 错误和异常
+错误信息的最后一行说明程序遇到了什么类型的错误。
+### 1.9.1. 句法错误
+### 1.9.2. 异常
+### 1.9.3. 异常的处理
+使用try， except捕获并处理异常。使用raise 强制触发指定的异常。如果存在 finally 子句，则 finally 子句是 try 语句结束前执行的最后一项任务。不论 try 语句是否触发异常，都会执行 finally 子句。
+### 1.9.4. 预定义的清理操作  
+某些对象定义了不需要该对象时要执行的标准清理操作。无论使用该对象的操作是否成功，都会执行清理操作。比如，下例要打开一个文件，并输出文件内容：
+```py
+for line in open("myfile.txt"):
+    print(line, end="")
+```
+这个代码的问题在于，执行完代码后，文件在一段不确定的时间内处于打开状态。在简单脚本中这没有问题，但对于较大的应用程序来说可能会出问题。with 语句支持以及时、正确的清理的方式使用文件对象：
+```py
+with open("myfile.txt") as f:
+    for line in f:
+        print(line, end="")
+```
+语句执行完毕后，即使在处理行时遇到问题，都会关闭文件 f。和文件一样，支持预定义清理操作的对象会在文档中指出这一点。
+## 1.10. 其他特性
+### 1.10.1. 多重赋值  
+例如`a, b = b, a+b`  
+注意，多重赋值其实只是元组打包和序列解包的组合。
+### 1.10.2. 缩进  
+- 交互式输入复合语句时, 要在最后输入空白行表示结束（因为解析器不知道哪一行代码是最后一行）。
+- 同一块语句的每一行的缩进相同。
+- 使用";"号将两个或多个逻辑行合并成一个物理行。
+- 使用"\"号连接两个物理行。
+- 字典、列表等变量赋值语句，是可以直接书写为多个物理行的。
+### 1.10.3. 列表推导式
+列表推导式的方括号内包含以下内容：一个表达式，后面为一个 for 子句，然后，是零个或多个 for 或 if 子句。结果是由表达式依据 for 和 if 子句求值计算而得出一个新列表。    
+举例来说，以下列表推导式将两个列表中不相等的元素组合起来：
+```python
+>>> [(x, y) for x in [1,2,3] for y in [3,1,4] if x != y]
+[(1, 3), (1, 4), (2, 3), (2, 1), (2, 4), (3, 1), (3, 4)]
+```
+
+---
+
+嵌套的列表推导式  
+列表推导式中的初始表达式可以是任何表达式，甚至可以是另一个列表推导式。
+```python
+>>> matrix = [
+...     [1, 2, 3, 4],
+...     [5, 6, 7, 8],
+...     [9, 10, 11, 12],
+... ]
+```
+下面的列表推导式可以转置行列：
+```python
+>>>
+>>> [[row[i] for row in matrix] for i in range(4)]
+[[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+```
+需要注意里面的嵌套关系
+
+## 1.11. 常用函数
+`print()`  
+`input()`  
+`list()`  
+`type()`查看对象的类型.每个值都是一个对象，因此具有 类 （也称为 类型），并存储为 object.__class__ 。
+```py
+>>> x.__class__
+<class '__main__.MyClass'>
+```
+Python还有有两个内置函数可被用于继承机制：
+- 使用 isinstance() 来检查一个实例的类型: isinstance(obj, int) 仅会在 obj.\_\_class\_\_ 为 int 或某个派生自 int 的类时为 True。
+- 使用 issubclass() 来检查类的继承关系: issubclass(bool, int) 为 True，因为 bool 是 int 的子类。 但是，issubclass(float, int) 为 False，因为 float 不是 int 的子类。
+## 1.12. 待继续学习的特性
+[生成器](#生成器)
+[生成器表达式](#生成器表达式)
