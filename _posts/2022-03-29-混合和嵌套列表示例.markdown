@@ -1,0 +1,61 @@
+---
+title: "Edge Case: Nested and Mixed Lists"
+categories:
+  - Edge Case
+tags:
+  - content
+  - css
+  - edge case
+  - lists
+  - markup
+last_modified_at: 2017-03-09T14:25:52-05:00
+---
+
+translate so-simple-theme/docs/_posts/2009-05-15-edge-case-nested-and-mixed-lists.md
+
+Nested and mixed lists are an interesting beast. It's a corner case to make sure that lists within lists do not break the ordered list numbering order and list styles go deep enough.  
+嵌套和混合列表是一种有趣的东西。这是一种特殊的容器，可以确保列表中的列表不会打破有序的列表编号顺序，并且保持对齐。
+
+## Ordered -- Unordered -- Ordered
+排序 -- 不排序 -- 排序
+1. ordered item
+2. ordered item 
+  * **unordered**
+  * **unordered** 
+    1. ordered item
+    2. ordered item
+3. ordered item
+4. ordered item
+
+## Ordered -- Unordered -- Unordered
+排序 -- 不排序 -- 不排序
+1. ordered item
+2. ordered item 
+  * **unordered**
+  * **unordered** 
+    * unordered item
+    * unordered item
+3. ordered item
+4. ordered item
+
+## Unordered -- Ordered -- Unordered
+不排序 -- 排序 -- 不排序
+* unordered item
+* unordered item 
+  1. ordered
+  2. ordered 
+    * unordered item
+    * unordered item
+* unordered item
+* unordered item
+
+## Unordered -- Unordered -- Ordered
+不排序 -- 不排序 -- 排序
+* unordered item
+* unordered item 
+  * unordered
+  * unordered 
+    1. **ordered item**
+    2. **ordered item**
+* unordered item
+* unordered item
