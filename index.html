@@ -5,7 +5,9 @@ show_excerpts: true
 paginate: true
 entries_layout: list
 ---
+<audio id="background_music">
+    <source src="assets/audio/music.mp3">
+</audio>
 <script>
-var audio = new Audio("https://raw.githubusercontent.com/adinxu/REPOSITORY/BRANCH/Audio.mp3")
-audio.play()
+document.addEventListener('click', function() { document.getElementById('background_music').play() }, { once: true });
 </script>
