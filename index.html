@@ -9,5 +9,5 @@ entries_layout: list
     <source src="assets/audio/music.mp3">
 </audio>
 <script>
-document.addEventListener('click', function() { document.getElementById('background_music').play() }, { once: true });
+document.addEventListener('click', function() { document.getElementById('background_music').volume=0.1;document.getElementById('background_music').play(); }, { once: true });
 </script>
