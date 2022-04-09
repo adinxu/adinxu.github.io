@@ -122,6 +122,6 @@ author:
 # Footer Links
 # 页脚的链接
 footer_links:
-  - title: GitHub
-    url: https://github.com/adinxu
+  - title: Web Source Code
+    url: https://github.com/adinxu/adinxu.github.io
     icon: fab fa-github-square
