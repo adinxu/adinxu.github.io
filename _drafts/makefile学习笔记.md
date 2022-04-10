@@ -2,7 +2,7 @@ makefile文件，见了不少，但自己不会写，在这里学习一下，看
 另外，最原始版本的gnu make网址[在这](http://www.gnu.org/software/make/manual/make.html)。  
 这里针对阅读内容做下记录。
 # 程序编译顺序回顾
-预处理->编译->汇编->链接
+预处理->编译->汇编->链接  
 预处理主要处理头文件包含，宏定义替换，条件编译等，输出.i文件。  
 编译阶段将文本编译为汇编代码或中间码，到这为止是编译器的前端，输出.s文件。  
 汇编阶段将汇编代码转换为二进制代码，这步已经与平台强相关，输出.o文件。  
@@ -11,10 +11,15 @@ makefile文件，见了不少，但自己不会写，在这里学习一下，看
 ## cc,gcc,g++
 可以看以下资料：
 1. [Linux 下 的 cc 和 gcc](https://www.cnblogs.com/zhouyinhui/archive/2010/02/01/1661078.html)
-2. [g++ gcc 的区别](https://www.cnblogs.com/xiedan/archive/2009/10/25/1589462.html)
+2. [g++ gcc 的区别](https://www.cnblogs.com/xiedan/archive/2009/10/25/1589462.html)  
+
 简单来说，cc(c compiler)是一个编译器，而gcc(GNU compiler collection)是编译器集合。如果在linux下gcc命令与cc是等效的，因为cc是软链接到gcc的。
 ## pkg-config
+man手册里介绍说，pkg-config可以返回已安装库的元信息。所以可以用于makefile脚本里面。
 ## cmake
+CMake(cross platform make)是一个跨平台的安装（编译）工具，可以用简单的语句来描述所有平台的安装(编译过程)。他能够输出各种各样的makefile或者project文件，能测试编译器所支持的C++特性,类似UNIX下的automake。
+## automake
+automake能够根据`Makefile.am`的配置来生成`Makefile.in`.后续执行./configure即可生成Makefile文件。
 # makefile概览
 makefile是make命令的执行对象，它告诉make命令需要怎么样的去编译和链接程序。
 ## 基本规则
@@ -392,6 +397,30 @@ sources = main.c func.c
 include $(sources:.c=.d)
 ```
 上述语句中的 $(sources:.c=.d) 中的 .c=.d 的意思是做一个替换，把变量 $(sources) 所有 .c 的字串都替换成 .d ，即为include了main.d和func.d。当然，你得注意次序，因为include是按次序来载入文件，最先载入的 .d 文件中的目标会成为默认目标。
+下面又是实例环节：
+```
+#vpath %.c app:cliplugin:lib:resource
+#vpath %.h include
+#vpath %.d app:cliplugin:lib:resource
+VPATH=app:cliplugin:lib:resource:include
+
+OBJS=main.o cli.o lib.o resource.o
+TARGETS=makefile_test
+
+$(TARGETS):$(OBJS)
+        cc -o $@ $(OBJS)
+
+include $(OBJS:.o=.d)
+
+%.d:%.c
+        cc -MM $< > $@.$$$$; \
+        sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+        rm -f $@.$$$$
+
+clean:
+        @rm -rf $(TARGETS) $(OBJS) $(OBJS:.o=.d)
+```
+其中include那一行引用了所有.d文件，如果不存在会通过下面的模式规则来生成并包含进主makefile中来。因为include是在检查依赖前进行的，所以当检查到TARGETS需要OBJS时，关于OBJS的依赖规则此时已经被包含进来了。
 ## 书写命令
 每条规则中的命令和操作系统Shell的命令行是一致的。make会一按顺序一条一条的执行命令，每条命令的开头必须以 Tab 键开头，除非，命令是紧跟在依赖规则后面的分号后的。在命令行之间中的空格或是空行会被忽略，但是如果该空格或空行是以Tab键开头的，那么make会认为其是一个空命令。
 我们在UNIX下可能会使用不同的Shell，但是make的命令默认是被 /bin/sh ——UNIX的标准Shell 解释执行的。除非你特别指定一个其它的Shell。Makefile中， # 是注释符，很像C/C++中的 // ，其后的本行字符都被注释。
@@ -480,3 +509,307 @@ foo.c : foo.y
 在Makefile中的定义的变量，就像是C/C++语言中的宏一样，他代表了一个文本字串，在Makefile中执行的时候其会自动原模原样地展开在所使用的地方。其与C/C++所不同的是，你可以在Makefile中改变其值。在Makefile中，变量可以使用在“目标”，“依赖目标”， “命令”或是Makefile的其它部分中。  
 变量的命名字可以包含字符、数字，下划线（可以是数字开头），但不应该含有 : 、 # 、 = 或是空字符（空格、回车等）。变量是大小写敏感的，“foo”、“Foo”和“FOO”是三个不同的变量名。传统的Makefile的变量名是全大写的命名方式，但我推荐使用大小写搭配的变量名，如：MakeFlags。这样可以避免和系统的变量冲突，而发生意外的事情。
 ### 变量中的变量
+1.`=`
+在 = 左侧是变量，右侧是变量的值，右侧变量的值可以定义在文件的任何一处，也就是说，右侧中的变量不一定非要是已定义好的值，其也可以使用后面定义的值。如：
+```
+foo = $(bar)
+bar = $(ugh)
+ugh = Huh?
+
+all:
+    echo $(foo)
+```
+执行“make all”将会打出变量 $(foo) 的值是 Huh?  
+这种形式也有不好的地方，那就是递归定义，如：  
+```
+A = $(B)
+B = $(A)
+```
+2.`:=`
+为了避免上面的这种方法，我们可以使用make中的另一种用变量来定义变量的方法。这种方法使用的是 := 操作符，如：  
+这种方法，前面的变量不能使用后面的变量，只能使用前面已定义好了的变量。如果是这样：  
+```
+y := $(x) bar
+x := foo
+```
+那么，y的值是“bar”，而不是“foo bar”。  
+看下面的例子：  
+```
+ifeq (0,${MAKELEVEL})
+cur-dir   := $(shell pwd)
+whoami    := $(shell whoami)
+host-type := $(shell arch)
+MAKE := ${MAKE} host-type=${host-type} whoami=${whoami}
+endif
+```
+对于系统变量“MAKELEVEL”，其意思是，如果我们的make有一个嵌套执行的动作（参见前面的“嵌套使用make”），那么，这个变量会记录了我们的当前Makefile的调用层数。  
+定义空格变量  
+```
+nullstring :=
+space := $(nullstring) # end of the line
+```
+nullstring是一个Empty变量，其中什么也没有，而我们的space的值是一个空格。因为在操作符的右边是很难描述一个空格的，这里采用的技术很管用，先用一个Empty变量来标明变量的值开始了，而后面采用“#”注释符来表示变量定义的终止，这样，我们可以定义出其值是一个空格的变量。  
+请注意这里关于“#”的使用，注释符“#”的这种特性值得我们注意，如果我们这样定义一个变量：  
+```
+dir := /foo/bar    # directory to put the frobs in
+```
+dir这个变量的值是“/foo/bar”，后面还跟了4个空格，如果我们这样使用这样变量来指定别的目录——“$(dir)/file”那么就完蛋了。  
+3.`?=`
+`?=`含义是，如果FOO没有被定义过，那么变量FOO的值就是“bar”，如果FOO先前被定义过，那么这条语将什么也不做，
+```
+FOO ?= bar
+```
+其等价于：
+```
+ifeq ($(origin FOO), undefined)
+    FOO = bar
+endif
+```
+## 变量的高级用法
+### 变量值替换
+```
+foo := a.o b.o c.o
+bar := $(foo:.o=.c)
+```
+这个示例中，我们先定义了一个 $(foo) 变量，而第二行的意思是把 $(foo) 中所有以 .o 字串“结尾”全部替换成 .c ，所以我们的 $(bar) 的值就是“a.c b.c c.c”。  
+另外一种变量替换的技术是以“静态模式”（参见前面章节）定义的，如：  
+```
+foo := a.o b.o c.o
+bar := $(foo:%.o=%.c)
+```
+这个示例的效果和上面是相同的。
+### 用变量定义变量
+```
+x = y
+y = z
+a := $($(x))
+```
+最后$(a)的值为z。
+在这种方式中，可以使用多个变量来组成一个变量的名字，然后再取其值：
+```
+first_second = Hello
+a = first
+b = second
+all = $($a_$b)
+```
+这里的 $a_$b 组成了“first_second”，于是， $(all) 的值就是“Hello”。
+两种结合则为:
+```
+a_objects := a.o b.o c.o
+1_objects := 1.o 2.o 3.o
+
+sources := $($(a1)_objects:.o=.c)
+```
+这个例子中，如果 $(a1) 的值是“a”的话，那么， $(sources) 的值就是“a.c b.c c.c”；如果 $(a1) 的值是“1”，那么 $(sources) 的值是“1.c 2.c 3.c”。
+下面这种方法类似与函数指针：
+```
+ifdef do_sort
+    func := sort
+else
+    func := strip
+endif
+
+bar := a d b g q c
+
+foo := $($(func) $(bar))
+```
+下面这个例子中定义了三个变量：“dir”，“foo_sources”和“foo_print”：
+```
+dir = foo
+$(dir)_sources := $(wildcard $(dir)/*.c)
+define $(dir)_print
+lpr $($(dir)_sources)
+endef
+```
+### 追加变量值
+使用 += 操作符给变量追加值，如：
+```
+objects = main.o foo.o bar.o utils.o
+objects += another.o
+```
+$(objects) 值变成：“main.o foo.o bar.o utils.o another.o”（another.o被追加进去了）  
+如果变量之前没有定义过，那么， += 会自动变成 = ，如果前面有变量定义，那么 += 会继承于前次操作的赋值符。如果前一次的是 := ，那么 += 会以 := 作为其赋值符
+### override 指示符
+如果有变量是通常make的命令行参数设置的，那么Makefile中对这个变量的赋值会被忽略。如果你想在Makefile中设置这类参数的值，那么，你可以使用“override”指示符。其语法是:  
+```
+override <variable>; = <value>;
+
+override <variable>; := <value>;
+```
+也可以追加：
+```
+override <variable>; += <more text>;
+```
+对于多行的变量定义，我们用define指示符，在define指示符前，也同样可以使用override指示符，如:  
+```
+override define foo
+bar
+endef
+```
+### 多行变量
+还有一种设置变量值的方法是使用define关键字。使用define关键字设置变量的值可以有换行，这有利于定义一系列的命令（前面的“命令包”的技术就是利用这个关键字）。  
+define指示符后面跟的是变量的名字，而重起一行定义变量的值，定义是以endef 关键字结束。其工作方式和“=”操作符一样。变量的值可以包含函数、命令、文字，或是其它变量。
+### 环境变量
+make运行时的系统环境变量可以在make开始运行时被载入到Makefile文件中，但是如果Makefile中已定义了这个变量，或是这个变量由make命令行带入，那么系统的环境变量的值将被覆盖。（如果make指定了“-e”参数，那么，系统环境变量将覆盖Makefile中定义的变量）  
+因此，如果我们在环境变量中设置了 CFLAGS 环境变量，那么我们就可以在所有的Makefile中使用这个变量了。这对于我们使用统一的编译参数有比较大的好处。如果Makefile中定义了CFLAGS，那么则会使用Makefile中的这个变量，如果没有定义则使用系统环境变量的值，一个共性和个性的统一，很像“全局变量”和“局部变量”的特性。  
+当make嵌套调用时（参见前面的“嵌套调用”章节），上层Makefile中定义的变量会以系统环境变量的方式传递到下层的Makefile 中。当然，默认情况下，只有通过命令行设置的变量会被传递。而定义在文件中的变量，如果要向下层Makefile传递，则需要使用export关键字来声明。  
+并不推荐把许多的变量都定义在系统环境中，这样，在我们执行不用的Makefile时，拥有的是同一套系统变量，这可能会带来更多的麻烦。
+### 目标变量
+可以为某个目标设置局部变量，这种变量被称为“Target-specific Variable”，它可以和“全局变量”同名，因为它的作用范围只在这条规则以及连带规则中，所以其值也只在作用范围内有效。而不会影响规则链以外的全局变量的值。  
+```
+<target ...> : <variable-assignment>;
+<target ...> : overide <variable-assignment>
+```
+<variable-assignment>;可以是前面讲过的各种赋值表达式，如 = 、 := 、 += `` 或是 ``?= 。第二个语法是针对于make命令行带入的变量，或是系统环境变量。  
+```
+prog : CFLAGS = -g
+prog : prog.o foo.o bar.o
+    $(CC) $(CFLAGS) prog.o foo.o bar.o
+
+prog.o : prog.c
+    $(CC) $(CFLAGS) prog.c
+
+foo.o : foo.c
+    $(CC) $(CFLAGS) foo.c
+
+bar.o : bar.c
+    $(CC) $(CFLAGS) bar.c
+```
+在这个示例中，不管全局的 $(CFLAGS) 的值是什么，在prog目标，以及其所引发的所有规则中（prog.o foo.o bar.o的规则）， $(CFLAGS) 的值都是 -g
+### 模式变量
+给定一种“模式”，可以把变量定义在符合这种模式的所有目标上。  
+可以以如下方式给所有以 .o 结尾的目标定义目标变量
+```
+%.o : CFLAGS = -O
+```
+他的语法同目标变量的相同：
+```
+<pattern ...>; : <variable-assignment>;
+
+<pattern ...>; : override <variable-assignment>;
+```
+## 使用条件判断
+使用条件判断，可以让make根据运行时的不同情况选择不同的执行分支。条件表达式可以是比较变量的值，或是比较变量和常量的值。
+```
+libs_for_gcc = -lgnu
+normal_libs =
+
+ifeq ($(CC),gcc)
+    libs=$(libs_for_gcc)
+else
+    libs=$(normal_libs)
+endif
+
+foo: $(objects)
+    $(CC) -o foo $(objects) $(libs)
+```
+使用示例如上。  
+条件表达式的语法如下：
+```
+<conditional-directive>
+<text-if-true>
+endif
+```
+和
+```
+<conditional-directive>
+<text-if-true>
+else
+<text-if-false>
+endif
+```
+<conditional-directive> 表示条件关键字,这个关键字有四个。分别为`ifeq`,`ifneq`,代表两个值相同与不同的判断。剩下两个为`ifdef`和`ifndef`，代表判断值是否为空。  
+注意， ifdef 只是测试一个变量是否有值，其并不会把变量扩展到当前位置。  
+```
+bar =
+foo = $(bar)
+ifdef foo
+    frobozz = yes
+else
+    frobozz = no
+endif
+```
+此处$(frobozz) 值是 yes .
+```
+foo =
+ifdef foo
+    frobozz = yes
+else
+    frobozz = no
+endif
+```
+此处的值则为no.所以他只会判断判断值有无定义，而不管最后是否有值。  
+特别注意的是，make是在读取Makefile时就计算条件表达式的值，并根据条件表达式的值来选择语句，所以，你最好不要把自动化变量（如 $@ 等）放入条件表达式中，因为自动化变量是在运行时才有的。
+
+而且为了避免混乱，make不允许把整个条件语句分成两部分放在不同的文件中。
+## makefile函数
+### 函数调用语法
+```
+$(<function> <arguments>)
+#这种也可以
+${<function> <arguments>}
+```
+<function> 就是函数名，make支持的函数不多。 <arguments> 为函数的参数，参数间以逗号 , 分隔，而函数名和参数之间以“空格”分隔。函数调用以 $ 开头，以圆括号或花括号把函数名和参数括起。
+下方具体的函数及介绍可参考[此处](https://seisman.github.io/how-to-write-makefile/functions.html#id3)
+### 字符串处理函数
+### 文件名操作函数
+### foreach函数
+### if函数
+### call函数
+### origin函数
+### shell函数
+### 控制make的函数
+## make的运行
+### make的退出码
+0表示成功执行。  
+1如果make运行时出现任何错误，其返回1。  
+2如果你使用了make的“-q”选项，并且make使得一些目标不需要更新，那么返回2。  
+### 显式指定makefile
+要显式指定makefile，可以使用-f 或是 --file 参数（ --makefile 参数也行）。例如，我们有个makefile的名字是“hchen.mk”，那么，我们可以这样来让make来执行这个文件：
+```
+make –f hchen.mk
+```
+### 指定目标
+一般来说，make的最终目标是makefile中的第一个目标，而其它目标一般是由这个目标连带出来的。这是make的默认行为。任何在makefile中的目标都可以被指定成终极目标，只需在make命令后直接跟目标的名字就可以完成（如前面提到的“make clean”形式），但是除了以 - 打头，或是包含了 = 的目标，因为有这些字符的目标，会被解析成命令行参数或是变量。甚至没有被我们明确写出来的目标也可以成为make的终极目标，也就是说，只要make可以找到其隐含规则推导规则，那么这个隐含目标同样可以被指定成终极目标。  
+有一个make的环境变量叫 MAKECMDGOALS ，这个变量中会存放你所指定的终极目标的列表，如果在命令行上，你没有指定目标，那么，这个变量是空值。这个变量可以让你使用在一些比较特殊的情形下。比如下面的例子：
+```
+sources = foo.c bar.c
+ifneq ( $(MAKECMDGOALS),clean)
+    include $(sources:.c=.d)
+endif
+```
+基于上面的这个例子，只要我们输入的命令不是“make clean”，那么makefile会自动包含“foo.d”和“bar.d”这两个makefile。  
+使用指定终极目标的方法可以很方便地让我们编译我们的程序，例如下面这个例子：
+```
+.PHONY: all
+all: prog1 prog2 prog3 prog4
+```
+这个makefile中有四个需要编译的程序——“prog1”， “prog2”，“prog3”和 “prog4”，我们可以使用“make all”命令来编译所有的目标（如果把all置成第一个目标，那么只需执行“make”），我们也可以使用 “make prog2”来单独编译目标“prog2”。
+### 约定的目标名称
+all:这个伪目标是所有目标的目标，其功能一般是编译所有的目标。  
+clean:这个伪目标功能是删除所有被make创建的文件。  
+install:这个伪目标功能是安装已编译好的程序，其实就是把目标执行文件拷贝到指定的目标中去。  
+print:这个伪目标的功能是例出改变过的源文件。  
+tar:这个伪目标功能是把源程序打包备份。也就是一个tar文件。  
+dist:这个伪目标功能是创建一个压缩文件，一般是把tar文件压成Z文件。或是gz文件。  
+TAGS:这个伪目标功能是更新所有的目标，以备完整地重编译使用。  
+check和test:这两个伪目标一般用来测试makefile的流程。  
+### 检查规则
+有时候，我们不想让我们的makefile中的规则执行起来，我们只想检查一下我们的命令，或是执行的序列。于是我们可以使用make命令的下述参数：  
+-n 不执行，只打印  
+-t 只把目标文件日期更新，但不更改目标文件。也就是说，make假装编译目标，但不是真正的编译目标，只是把目标变成已编译过的状态。  
+-q 如果目标存在，那么其什么也不会输出，当然也不会执行编译，如果目标不存在，其会打印出一条出错信息。
+-W 这个参数需要指定一个文件。一般是是源文件（或依赖文件），Make会根据规则推导来运行依赖于这个文件的命令，一般来说，可以和“-n”参数一同使用，来查看这个依赖文件所发生的规则命令。  
+另外一个很有意思的用法是结合 -p 和 -v 来输出makefile被执行时的信息
+### make参数
+参见[make参数](https://seisman.github.io/how-to-write-makefile/invoke.html#id4)
+这里就提几个有用的
+-B 总是重编译所有目标  
+-i 执行时忽略所有错误  
+-k 出错也不停止运行  
+-s 不输出命令的输出  
+-t 把所有目标的修改日期变为最新，即阻止生成目标的命令运行。  
+-w 输出运行makefile之前和之后的信息。这个参数对于跟踪嵌套式调用make时很有用。  
+## 隐含规则
+## 使用make更新库函数文件
+这两个以后有需要再整吧。
